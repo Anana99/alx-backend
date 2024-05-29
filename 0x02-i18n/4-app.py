@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-'''Flask application
-'''
-from flask import Flask, render_template, request
+"""A Basic Flask app with internationalization support.
+"""
 from flask_babel import Babel
+from flask import Flask, render_template, request
 
 
 class Config:
-    '''the Flask Babel configuration.
-    '''
+    """Represents a Flask Babel configuration.
+    """
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
@@ -23,10 +23,10 @@ babel = Babel(app)
 def get_locale() -> str:
     """Retrieves the locale for a web page.
     """
-    query_param = request.query_string.decode('utf-8').split('&')
+    queries = request.query_string.decode('utf-8').split('&')
     query_table = dict(map(
         lambda x: (x if '=' in x else '{}='.format(x)).split('='),
-        query_param,
+        queries,
     ))
     if 'locale' in query_table:
         if query_table['locale'] in app.config["LANGUAGES"]:
@@ -35,9 +35,9 @@ def get_locale() -> str:
 
 
 @app.route('/')
-def hello() -> str:
-    '''the base route
-    '''
+def get_index() -> str:
+    """The home/index page.
+    """
     return render_template('4-index.html')
 
 
